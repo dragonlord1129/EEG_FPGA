@@ -16,7 +16,7 @@ The overall list of equipment outside of FPGA and simulation environment are:
 
 The overall idea here is to amplify the electrical activity of brain that is usually in the range of 10 to 50 micro volts in to a range such that ADC can recognize the signals. Normally for signals with higher activity of signals relative to noise a single stage of gain would be enough, however concerning our application, the noise is significantly stronger relative to the signal, hence gain amplified in a single stage would lead us to a situation where we lose the signal(or at least most of signals). Hence the gain amplification is done in two stages. The first stage uses an Instrumentation Amplifier(IA) AD620 to amplify the signal 50 times. The formula is:
 
-					G = 1 + \frac{49.4\,\text{k}\Omega}{R_G}
+					$G = 1 + \frac{49.4\,\text{k}\Omega}{R_G}$
 
 The immediate output of IA is interfaced with a 0.49Hz HPF filter to handle DC offset values. The remaining gain as well as the filtering of this is done using LM358 interfaced with 33k Ohm, 2k2 Ohm resistors and a 0.1uF ceramic capacitor. The next stage will be shifting of signals, this is done with an offset of 1.65V with the output of LM358.
 

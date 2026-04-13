@@ -64,7 +64,71 @@ set_property PULLUP true [get_ports som240_1_connector_pmod_iic_sda_io]
 8. Add this to your Jupyter Notebook File
 
 ```python
-# (unchanged code)
+from pynq import Overlay  
+import numpy as np  
+import cffi  
+import csv
+import time
+  
+# Load overlay  
+overlay = Overlay("YOUR_FILENAME.bit")  
+  
+# Access IIC  
+iic = overlay.axi_iic_0
+
+
+
+# Initialize cffi and I2C interface
+ffi = cffi.FFI()
+# iic should be initialized in your environment
+# Example: iic = SomeI2CDriver(port=1)
+
+ADC_ADDR = 0x28  # AD7991 I2C address
+VREF = 3.3       # Reference voltage
+CSV_FILE = 'adc_data.csv'
+
+def read_raw(addr, length=8):
+    """Read 'length' bytes from ADC over I2C"""
+    buf = ffi.new("unsigned char[]", length)
+    try:
+        iic.receive(addr, buf, length)
+        return [buf[i] for i in range(length)]
+    except Exception as e:
+        print("Read error:", e)
+        return None
+
+def convert_ad7991(raw_bytes, Vref=3.3):
+    """Convert raw AD7991 bytes to 4-channel voltages"""
+    if raw_bytes is None or len(raw_bytes) != 8:
+        return None
+    voltages = []
+    for i in range(0, 8, 2):  # 2 bytes per channel
+        word = (raw_bytes[i] << 8) | raw_bytes[i+1]
+        adc_val = word >> 4  # 12-bit value (AD7991 MSB first)
+        voltage = (adc_val / 4095) * Vref
+        voltages.append(voltage)
+    return voltages
+
+# Prepare CSV file with headers for 4 channels
+with open(CSV_FILE, mode='w', newline='') as f:
+    writer = csv.writer(f)
+    writer.writerow(['Timestamp', 'CH0', 'CH1', 'CH2', 'CH3'])
+
+print(f"Logging ADC data to {CSV_FILE}...")
+
+try:
+    while True:
+        raw = read_raw(ADC_ADDR, 8)  # Read 4 channels (8 bytes)
+        voltages = convert_ad7991(raw, VREF)
+        if voltages:
+            timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
+            with open(CSV_FILE, mode='a', newline='') as f:
+                writer = csv.writer(f)
+                writer.writerow([timestamp] + voltages)
+            print(timestamp, voltages)
+        time.sleep(0.5)  # Adjust sampling interval as needed
+except KeyboardInterrupt:
+    print("\nStopped by user")
 ```
 
 It is good practice to add the FIR Compiler alongside but since the filter already attenuates frequencies higher than 40Hz I did not think it was necessary.

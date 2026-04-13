@@ -1,6 +1,6 @@
 ***Requirement*** : Signal acquisition requirements vary significantly depending on the application. For medical-grade systems, where even minute variations must be captured for diagnosis and observation, the acquisition setup becomes highly precise, expensive, and complex.
 
-However, for our application—EEG in a Brain-Computer Interface (BCI)—the requirements are comparatively relaxed
+However, for our application—EEG in a Brain-Computer Interface (BCI)—the requirements are comparatively relaxed.
 
 TL;DR: The signal quality only needs to be good enough to distinguish meaningful patterns from noise.
 

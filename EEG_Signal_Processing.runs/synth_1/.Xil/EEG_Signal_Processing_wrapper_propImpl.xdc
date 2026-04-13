@@ -1,5 +1,0 @@
-set_property SRC_FILE_INFO {cfile:/home/dragonlord/Desktop/EEG_Signal_Processing/EEG_Signal_Processing.srcs/constrs_1/new/adc_port.xdc rfile:../../../EEG_Signal_Processing.srcs/constrs_1/new/adc_port.xdc id:1} [current_design]
-set_property src_info {type:XDC file:1 line:10 export:INPUT save:INPUT read:READ} [current_design]
-set_property PACKAGE_PIN E12 [get_ports som240_1_connector_pmod_iic_scl_io]
-set_property src_info {type:XDC file:1 line:15 export:INPUT save:INPUT read:READ} [current_design]
-set_property PACKAGE_PIN D10 [get_ports som240_1_connector_pmod_iic_sda_io]

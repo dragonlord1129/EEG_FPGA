@@ -1,5 +1,8 @@
-***Requirement*** : The acquisition of signals vary heavily depending on the requirement. To achieve medical grade accuracy, i.e. designing a system that actually tracks every minute changes for observation and diagnosis, the system of acquisition is entirely different.  The precision requirement is directly analogous to the cost of equipment, as well as increases the complexity of the the overall process. However to be concerned with our application, the application of EEG in Brain computer Interface([[BCI]]) interface, the requirement is fairly simple.
-*TLDR*: Enough for the content to be read relatively better to noise.
+***Requirement*** : Signal acquisition requirements vary significantly depending on the application. For medical-grade systems, where even minute variations must be captured for diagnosis and observation, the acquisition setup becomes highly precise, expensive, and complex.
+
+However, for our application—EEG in a Brain-Computer Interface (BCI)—the requirements are comparatively relaxed.
+
+TL;DR: The signal quality only needs to be good enough to distinguish meaningful patterns from noise.
 
 ***Equipment***
 The overall list of equipment outside of FPGA and simulation environment are:

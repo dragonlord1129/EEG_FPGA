@@ -13,40 +13,38 @@ The overall list of equipment outside of FPGA and simulation environment are:
 
 The overall idea here is to amplify the electrical activity of brain that is usually in the range of 10 to 50 micro volts in to a range such that ADC can recognize the signals. Normally for signals with higher activity of signals relative to noise a single stage of gain would be enough, however concerning our application, the noise is significantly stronger relative to the signal, hence gain amplified in a single stage would lead us to a situation where we lose the signal(or at least most of signals). Hence the gain amplification is done in two stages. The first stage uses an Instrumentation Amplifier(IA) AD620 to amplify the signal 50 times. The formula is:
 
-```
 					$G = 1 + \frac{49.4\,\text{k}\Omega}{R_G}$
-```
 
 The immediate output of IA is interfaced with a 0.49Hz HPF filter to handle DC offset values. The remaining gain as well as the filtering of this is done using LM358 interfaced with 33k Ohm, 2k2 Ohm resistors and a 0.1uF ceramic capacitor. The next stage will be shifting of signals, this is done with an offset of 1.65V with the output of LM358.
 
 Lets break this hardware setup step by step:
 
 1. Instrumentation Amplifier Gain.
-   ![FigA1](docs/Pasted image 20260321132743.png)
+   ![FigA1](docs/Pastedimage 0260321132743.png)
    FigA1: Instrumentation amplifier Gain with 0.49Hz HPF
 
 2. Second Stage Gain & Filtering with DC shift
-   ![FigA2](docs/Pasted image 20260321142041.png)
+   ![FigA2](docs/Pastedimage20260321142041.png)
    FigA2: LM358 Gain and Filtering with DC shift
 
 Four circuits of A1 and A2 are constructed, and hence we will have four adc outputs corresponding to the c3, c4, cz and forehead according to [[10-20 system]] in [[BCI]].
 
 Then the following design was made in Vivado, since the Pmod ad2 is an IIC based device the design was constructed using an AXI IIC, the IIC interface was connected to AXI SmartConnect which was connected to Zynq.
 
-![Vivado](docs/Screenshot from 2026-03-29 08-14-11.png)
+![Vivado](docs/Screenshotfrom2026-03-2908-14-11.png)
 
 Steps:
 
 1. Place Zynq IP and run block automation
 2. Configure the PL clock and PS-PL configurations
 
-![Config1](docs/Pasted image 20260402212854.png)
-![Config2](docs/Pasted image 20260402212827.png)
+![Config1](docs/Pastedimage20260402212854.png)
+![Config2](docs/Pastedimage20260402212827.png)
 
 3. Place AXI smart Connect and AXI IIC and then run Connect Automation
 4. Check the documentation for what port you are using to interface ADC and write .xdc file based on that, I used PMOD J2 and my ports where E12 and D10.
 
-![Pinout](docs/Pasted image 20260402213542.png)
+![Pinout](docs/Pastedimage20260402213542.png)
 
 ```
 # I2C Clock (SCL)
